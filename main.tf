@@ -75,9 +75,13 @@ resource "aws_lb_listener" "listener_http-private" {
   protocol          = "HTTP"
 
   default_action {
-    type             = "forward"
-    target_group_arn = var.tg_arn
+    type = "fixed-response"
 
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Invalid Page"
+      status_code  = "404"
+    }
   }
 }
 
@@ -90,8 +94,12 @@ resource "aws_lb_listener" "listener_https" {
   certificate_arn   = "arn:aws:acm:us-east-1:492681564023:certificate/ea2dec62-a84a-40c8-a40d-ef3c8ce2e6de"
 
   default_action {
-    type             = "forward"
-    target_group_arn = var.tg_arn
+    type = "fixed-response"
 
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Invalid Page"
+      status_code  = "404"
+    }
   }
 }
