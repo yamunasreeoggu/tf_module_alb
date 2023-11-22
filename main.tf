@@ -68,30 +68,12 @@ resource "aws_lb_listener" "listener_http-public" {
   }
 }
 
-resource "aws_lb_listener" "listener_http-private" {
-  count             = var.alb_type == "private" ? 1 : 0
+resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_lb.alb.arn
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Invalid Page"
-      status_code  = "404"
-    }
-  }
-}
-
-resource "aws_lb_listener" "listener_https" {
-  count             = var.alb_type == "public" ? 1 : 0
-  load_balancer_arn = aws_lb.alb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:us-east-1:492681564023:certificate/ea2dec62-a84a-40c8-a40d-ef3c8ce2e6de"
+  port              = var.port
+  protocol          = var.protocol
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.certificate_arn
 
   default_action {
     type = "fixed-response"
